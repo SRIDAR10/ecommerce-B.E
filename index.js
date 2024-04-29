@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const { connectToDb } = require("./connectToDb");
 const userRouter = require("./server/Routes/user-auth")
+const productRouter = require("./server/Routes/Products")
+const adminRouter= require("./server/Routes/admin")
 require('dotenv').config();
 const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -18,7 +20,8 @@ connectToDb();
 app.use(express.json());
 
 app.use("/", userRouter);
-
+app.use("/product",productRouter);
+app.use("/product-settings",adminRouter);
 app.listen(PORT, (error) => {
   if (!error) {
     console.log(
@@ -33,10 +36,11 @@ app.post("/create-checkout-session", async (req, res) => {
     try {
       const productList = req.body;
       const lineItems = [];
+      console.log(productList);
   
       for (const productData of productList) {
         const product = await stripe.products.create({
-          name: productData.title,
+          name: productData.product_name,
           description: productData.description,
         });
   
@@ -49,7 +53,7 @@ app.post("/create-checkout-session", async (req, res) => {
 
         lineItems.push({
           price: price.id,
-          quantity: productData.quantity
+          quantity: productData.quantity ?? 1
         });
       }
   
