@@ -175,17 +175,32 @@ const getCompanies = async(req, res)=>{
 }
 
 const addCompany = async(req, res)=>{
-console.log(req.body);
 const company = await Company.insertMany(req?.body);
   return res.status(200).json({
     message: "success",
   });
 }
 
+const deleteProduct = async (req, res) => {
+  console.log(req);
+  const productId = req.query.productId;
+  console.log("productId", productId);
+  try {
+    const product = await Product.findByIdAndDelete(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    return res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 module.exports = {
   getProducts,
   updateStock,
   addProduct,
   getCompanies,
-  addCompany
+  addCompany,
+  deleteProduct
 };
