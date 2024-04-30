@@ -70,4 +70,4 @@ app.post("/create-checkout-session", async (req, res) => {
       console.error('Error processing checkout session:', error);
       res.status(500).send('Error processing checkout session');
     }
-  });
+  }); 
