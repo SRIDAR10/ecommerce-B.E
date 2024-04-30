@@ -11,7 +11,10 @@ const registerUser = async (req, res) => {
     const user = {
       name: req.body.name,
       email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 10), // Await the hash function
+      password: await bcrypt.hash(req.body.password, 10),
+      address: req.body.address,
+      city: req.body.city,
+      zipcode: req.body.zipcode,
     };
 
     // Check if the user is already registered.
@@ -65,6 +68,7 @@ const loginUser = async (req, res) => {
         message: "Login successful",
         user: {
           email: user.email,
+          role: user.role || "user",
         },
       });
     } else {

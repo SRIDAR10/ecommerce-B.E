@@ -6,6 +6,10 @@ const ProductSchema = new Schema({
    type: String,
   
   },
+  company_id: {
+    type: String,
+   
+   },
   product_name: {
    type: String,
    
